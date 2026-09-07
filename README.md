@@ -49,7 +49,7 @@ unset CR_PAT
 ./manage.sh build
 ```
 
-O comando cria a imagem local `gtgwf:latest` e a etiqueta para:
+O comando cria diretamente a imagem com o mesmo nome usado no registro:
 
 ```text
 ghcr.io/renatormc/gtgwf:latest

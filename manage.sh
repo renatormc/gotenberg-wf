@@ -2,7 +2,6 @@
 
 set -Eeuo pipefail
 
-readonly LOCAL_IMAGE="gtgwf"
 readonly GHCR_OWNER="renatormc"
 readonly IMAGE="ghcr.io/renatormc/gtgwf"
 readonly TAG="${TAG:-latest}"
@@ -18,22 +17,17 @@ image_name() {
 }
 
 build() {
-    local local_tag="${LOCAL_IMAGE}:${TAG}"
-    docker build --tag "$local_tag" .
-
-    docker tag "$local_tag" "$(image_name):${TAG}"
+    docker build --tag "$(image_name):${TAG}" .
 }
 
 push() {
-    local local_tag="${LOCAL_IMAGE}:${TAG}"
     local remote_tag="$(image_name):${TAG}"
 
-    docker image inspect "$local_tag" >/dev/null 2>&1 || {
-        printf 'A imagem local nao existe. Execute "%s build" primeiro.\n' "$0" >&2
+    docker image inspect "$remote_tag" >/dev/null 2>&1 || {
+        printf 'A imagem nao existe localmente. Execute "%s build" primeiro.\n' "$0" >&2
         exit 1
     }
 
-    docker tag "$local_tag" "$remote_tag"
     docker push "$remote_tag"
 }
 
