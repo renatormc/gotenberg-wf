@@ -3,6 +3,7 @@
 set -Eeuo pipefail
 
 readonly GHCR_OWNER="renatormc"
+readonly PACKAGE="gtgwf"
 readonly IMAGE="ghcr.io/renatormc/gtgwf"
 readonly TAG="${TAG:-latest}"
 
@@ -29,6 +30,15 @@ push() {
     }
 
     docker push "$remote_tag"
+
+    if ! command -v gh >/dev/null 2>&1; then
+        printf 'O push foi concluido, mas nao foi possivel tornar o pacote publico: instale o GitHub CLI (gh).\n' >&2
+        exit 1
+    fi
+
+    gh api --method PATCH \
+        "/user/packages/container/${PACKAGE}" \
+        --field visibility=public >/dev/null
 }
 
 case "${1:-}" in

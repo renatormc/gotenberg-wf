@@ -11,13 +11,14 @@ ghcr.io/renatormc/gtgwf:latest
 ## Pré-requisitos
 
 - Docker instalado e em execução
+- GitHub CLI (`gh`) instalado e autenticado com a conta `renatormc`
 - Uma conta GitHub com acesso ao usuário `renatormc`
-- Um Personal Access Token (PAT) do GitHub com a permissão `write:packages`
+- Um Personal Access Token (PAT) do GitHub com as permissões `write:packages` e `admin:packages`
 
 ## Criar o token
 
 1. Acesse **GitHub > Settings > Developer settings > Personal access tokens**.
-2. Crie um token com a permissão `write:packages`.
+2. Crie um token com as permissões `write:packages` e `admin:packages`.
 3. Copie o token. Ele será usado como senha do Docker.
 
 Não use a senha normal do GitHub no `docker login`.
@@ -69,6 +70,13 @@ Depois de fazer o login e executar o build:
 ./manage.sh push
 ```
 
+O comando também configura o pacote `gtgwf` como público no GitHub. Para isso,
+autentique o GitHub CLI antes de publicar:
+
+```bash
+gh auth login
+```
+
 Com uma tag específica:
 
 ```bash
@@ -77,7 +85,7 @@ TAG=1.0.0 ./manage.sh push
 
 ## Baixar a imagem
 
-Se o pacote for privado, faça login antes:
+Como a imagem é pública, não é necessário fazer login antes:
 
 ```bash
 docker pull ghcr.io/renatormc/gtgwf:latest
